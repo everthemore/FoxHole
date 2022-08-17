@@ -28,7 +28,7 @@ class FoxHole(gym.Env):
         # Perform action
         done = self.game.check_guess(action)
         # Fox makes a move
-        self.game.take_random_move()
+        move_str = self.game.take_random_move()
         # Update observation
         observation = np.array(self.history) #self.game.get_probabilities()
 
@@ -39,7 +39,8 @@ class FoxHole(gym.Env):
             done = True
             reward = 0
 
-        return observation, reward, done, {}
+        info = {'move':'quantum' if move_str[0]=="S" else 'classical'}
+        return observation, reward, done, info
 
     def reset(self):
         # Create a new game

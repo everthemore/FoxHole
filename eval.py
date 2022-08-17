@@ -2,33 +2,35 @@ import numpy as np
 from FoxHoleEnvironment import FoxHole
 from stable_baselines3 import PPO
 
-env = FoxHole(2,5)
+env = FoxHole(3,5)
 model = PPO.load("ppo_foxhole")
 
 count = 0
-trajectories = []
-for g in range(10):
+num_games_to_play = 100
+is_game_quantum = np.zeros(num_games_to_play)
+is_game_won = np.zeros(num_games_to_play)
+
+for g in range(num_games_to_play):
     print("\nPlaying game %d"%g)
+
     obs = env.reset()
     done = False
 
-    trajectory = []
+    classical = True
     while not done:
-        print(obs)
         action, _states = model.predict(obs)
-        trajectory.append(action)
-        print("Action: ", action)
-        obs, rewards, done, info = env.step(action)
-        env.render()
+        obs, reward, done, info = env.step(action)
 
-        if( rewards == 1 ):
-            count += 1
-            print("Won!")
+        if info['move'] == 'quantum':
+            is_game_quantum[g] = 1
 
-    trajectories.append(trajectory)
-print("Won %d out of 10 games"%count)
+    if( reward == 1 ):
+        is_game_won[g] = 1
+        print("Won!")
+    else:
+        print("Lost!")
 
-# import matplotlib.pyplot as plt
-# for t in trajectories:
-#     plt.plot(t)
-# plt.show()
+print("Won {0} out of {1} games".format(np.count_nonzero(is_game_won), num_games_to_play))
+
+quantum_game_indices = np.where(is_game_quantum == 1)
+print("Won {0} out of {1} *quantum* games".format(np.count_nonzero(is_game_won[quantum_game_indices]), len(quantum_game_indices[0])))
