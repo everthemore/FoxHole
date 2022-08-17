@@ -4,7 +4,7 @@
 
 ### Setup
 
-* git init submodule
+* git submodule update --init
 
 * Create a virtual environment
   * python -m venv venv
@@ -13,9 +13,9 @@
 * cd unitary
 * pip install .
 * cd ..
+* pip install -r requirements.txt
 
-### Train
+### Train and evaluate
 
 * python train.py
-
-### TODO
+* python eval.py
