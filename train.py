@@ -4,7 +4,7 @@ import os
 from FoxHoleEnvironment import FoxHole
 from stable_baselines3 import PPO
 
-env = FoxHole(5,10)
+env = FoxHole(2,5)
 
 os.makedirs("./logs/", exist_ok=True)
 model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./logs/")

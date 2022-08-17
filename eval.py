@@ -2,7 +2,7 @@ import numpy as np
 from FoxHoleEnvironment import FoxHole
 from stable_baselines3 import PPO
 
-env = FoxHole(5,10)
+env = FoxHole(2,5)
 model = PPO.load("ppo_foxhole")
 
 count = 0
